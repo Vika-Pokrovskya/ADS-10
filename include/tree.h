@@ -4,7 +4,7 @@
 class Tree {
  private:
     struct Node {
-        char val = ' ';
+        char value = ' ';
         bool fool = false;
         int cnum = 0;
         std::vector<Node*> leaf;
@@ -17,7 +17,7 @@ class Tree {
             return;
         if (!root->fool) {
             for (auto i = inchar.begin(); i != inchar.end(); i++)
-                if (*i == root->val) {
+                if (*i == root->value) {
                     inchar.erase(i);
                     break;
                 }
@@ -25,7 +25,7 @@ class Tree {
         for (size_t i = 0; i < inchar.size(); i++)
             root->leaf.push_back(new Node());
         for (size_t i = 0; i < root->leaf.size(); i++)
-            root->leaf[i]->val = inchar[i];
+            root->leaf[i]->value = inchar[i];
         for (size_t i = 0; i < root->leaf.size(); i++)
             buildTree(root->leaf[i], inchar);
         return;
@@ -38,7 +38,7 @@ class Tree {
             changes.push_back(ch);
         }
         if (!root->fool) {
-            ch += root->val;
+            ch += root->value;
             root->cnum += num;
             num += 1;
         }
@@ -53,10 +53,10 @@ class Tree {
         return changes[i];
     }
 
-    explicit Tree(std::vector<char> val) {
+    explicit Tree(std::vector<char> value) {
         root = new Node();
         root->fool = true;
-        buildTree(root, val);
+        buildTree(root, value);
         per(root);
     }
 };
