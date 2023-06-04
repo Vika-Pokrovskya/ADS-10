@@ -5,7 +5,7 @@
 #include  <cstdlib>
 #include  "tree.h"
 
-std::vector<char> getPerm(const Tree& tree, int n) {
+std::vector<char> getPerm(const Tree& tree, int num) {
     int i = 0;
     std::string chisla = tree[--num];
     std::vector<char> result;
