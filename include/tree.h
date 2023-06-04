@@ -1,63 +1,73 @@
 // Copyright 2022 NNTU-CS
 #ifndef INCLUDE_TREE_H_
 #define INCLUDE_TREE_H_
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <iostream>
 class Tree {
  private:
+    std::vector<std::string> stavlu;
     struct Node {
-        char value = ' ';
-        bool fool = false;
-        int cnum = 0;
-        std::vector<Node*> leaf;
+        char value;
+        std::vector<Node*> detki;
     };
     Node* root;
-    int num = 0;
 
-    void buildTree(Node* root, std::vector<char> inchar) {
-        if (inchar.size() == 0)
+    void NewNodes(Node* root, std::vector<char> value) {
+        if (value.size() == 0) {
             return;
-        if (!root->fool) {
-            for (auto i = inchar.begin(); i != inchar.end(); i++)
+        }
+        int b = 0;
+        sort(value.begin(), value.end());
+        if (root->value != '|') {
+            size_t j = 0;
+            auto i = value.begin();
+            for (i; i != value.end(); i++) {
+                j++;
                 if (*i == root->value) {
-                    inchar.erase(i);
+                    value.erase(i);
                     break;
+                } else {
+                    j--;
                 }
+            }
         }
-        for (size_t i = 0; i < inchar.size(); i++)
-            root->leaf.push_back(new Node());
-        for (size_t i = 0; i < root->leaf.size(); i++)
-            root->leaf[i]->value = inchar[i];
-        for (size_t i = 0; i < root->leaf.size(); i++)
-            buildTree(root->leaf[i], inchar);
-        return;
-    } 
+        while (b < value.size()) {
+            root->detki.push_back(new Node);
+            b++;
+        }
+        for (int i = 0; i < value.size(); i++) {
+            root->detki[i]->value = value[i];
+        }
+        for (int i = 0; i < value.size(); i++) {
+            NewNodes(root->detki[i], value);
+        }
+    }
 
-    std::vector<std::string> changes;
-    void per(Node* root, std::string ch = "") {
-        if (root->leaf.size() == 0) {
-            ch += root->value;
-            changes.push_back(ch);
+    void perestavil(Node* root, std::string st = "") {
+        if (!root->detki.size()) {
+            st += root->value;
+            stavlu.push_back(st);
+            return;
         }
-        if (!root->fool) {
-            ch += root->value;
-            root->cnum += num;
-            num += 1;
+        if ('|' != root->value) {
+            st += root->value;
         }
-        for (size_t i = 0; i < root->leaf.size(); i++)
-            per(root->leaf[i], ch);
+        for (int i = 0; i < root->detki.size(); i++) {
+            perestavil(root->detki[i], st);
+        }
     }
 
  public:
-    std::string operator[](int i) const {
-        if (i >= changes.size())
-            return "";
-        return changes[i];
+    std::string operator[](int num) const {
+        return stavlu[num];
     }
-
     explicit Tree(std::vector<char> value) {
-        root = new Node();
-        root->fool = true;
-        buildTree(root, value);
-        per(root);
+        root = new Node;
+        root->value = '|';
+        NewNodes(root, value);
+        perestavil(root);
     }
 };
 #endif  // INCLUDE_TREE_H_
